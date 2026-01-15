@@ -4,539 +4,1281 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🦇 Count Rackula - Save The Tracts</title>
-    <meta name="description" content="Enterprise-Scale Metabolic Oncology Protocol System - I vant to save your racks!">
+    <meta name="description" content="Enterprise-Scale Metabolic Oncology Protocol System">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦇</text></svg>">
     <style>
         :root {
             --primary-purple: #4A0E4E;
             --dark-bg: #1A1A2E;
+            --darker-bg: #0f0f1a;
             --silver: #C0C0C0;
             --blood-red: #8B0000;
             --gold: #FFD700;
             --text-light: #E8E8E8;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --sidebar-width: 260px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--primary-purple) 100%);
+            background: var(--dark-bg);
             color: var(--text-light);
             min-height: 100vh;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Header */
-        header {
-            text-align: center;
-            padding: 60px 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-bottom: 2px solid var(--gold);
-        }
-
-        .logo {
-            font-size: 4rem;
-            margin-bottom: 10px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        h1 {
-            font-size: 3rem;
-            color: var(--gold);
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            margin-bottom: 10px;
-        }
-
-        .tagline {
-            font-size: 1.5rem;
-            color: var(--silver);
-            font-style: italic;
-            margin-bottom: 20px;
-        }
-
-        .hashtags {
             display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 20px;
         }
 
-        .hashtag {
-            background: var(--blood-red);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            color: white;
+        /* Sidebar Navigation */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--darker-bg);
+            border-right: 2px solid var(--primary-purple);
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--primary-purple);
+        }
+
+        .sidebar-header .logo { font-size: 2.5rem; }
+        .sidebar-header h1 { font-size: 1.3rem; color: var(--gold); margin: 5px 0; }
+        .sidebar-header .tagline { font-size: 0.75rem; color: var(--silver); font-style: italic; }
+
+        .nav-menu { flex: 1; padding: 10px 0; }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: var(--silver);
             text-decoration: none;
-            transition: transform 0.2s, background 0.2s;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
         }
 
-        .hashtag:hover {
-            transform: scale(1.05);
-            background: var(--gold);
-            color: var(--dark-bg);
+        .nav-item:hover, .nav-item.active {
+            background: rgba(74, 14, 78, 0.5);
+            color: var(--gold);
+            border-left-color: var(--gold);
+        }
+
+        .nav-item .icon { font-size: 1.3rem; margin-right: 12px; width: 30px; text-align: center; }
+        .nav-item .label { font-size: 0.95rem; }
+
+        .nav-section-title {
+            padding: 15px 20px 5px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #666;
+            letter-spacing: 1px;
         }
 
         /* Main Content */
-        main {
-            padding: 60px 20px;
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            min-height: 100vh;
         }
 
-        .intro {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 60px;
+        .page-header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px 30px;
+            border-bottom: 2px solid var(--primary-purple);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .intro p {
-            font-size: 1.2rem;
+        .page-header h2 { color: var(--gold); font-size: 1.8rem; }
+        .page-header .subtitle { color: var(--silver); font-size: 0.9rem; margin-top: 5px; }
+
+        .page-content { padding: 30px; }
+
+        /* Page Views */
+        .page-view { display: none; }
+        .page-view.active { display: block; }
+
+        /* Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
             margin-bottom: 20px;
         }
 
-        /* Layers Grid */
-        .layers-section {
-            margin-bottom: 60px;
-        }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .card-title { color: var(--gold); font-size: 1.1rem; }
 
-        .section-title {
+        /* Grid Layouts */
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
+
+        /* Dashboard Stats */
+        .stat-card {
+            background: linear-gradient(145deg, rgba(74, 14, 78, 0.6), rgba(26, 26, 46, 0.8));
+            border-radius: 12px;
+            padding: 20px;
             text-align: center;
-            font-size: 2rem;
-            color: var(--gold);
-            margin-bottom: 40px;
-            position: relative;
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 100px;
-            height: 3px;
-            background: var(--gold);
-            margin: 10px auto;
-        }
+        .stat-card .stat-icon { font-size: 2rem; margin-bottom: 10px; }
+        .stat-card .stat-value { font-size: 2rem; color: var(--gold); font-weight: bold; }
+        .stat-card .stat-label { color: var(--silver); font-size: 0.85rem; margin-top: 5px; }
 
-        .layers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .layer-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .layer-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border-color: var(--gold);
-        }
-
-        .layer-number {
-            display: inline-block;
-            background: var(--primary-purple);
-            color: var(--gold);
-            width: 40px;
-            height: 40px;
+        /* Rackula Score */
+        .score-ring {
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
-            text-align: center;
-            line-height: 40px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .layer-card h3 {
-            color: var(--gold);
-            margin-bottom: 10px;
-        }
-
-        .layer-card p {
-            color: var(--silver);
-            font-size: 0.95rem;
-        }
-
-        /* Protocols Section */
-        .protocols-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .protocol-card {
-            background: linear-gradient(145deg, rgba(74, 14, 78, 0.8), rgba(26, 26, 46, 0.9));
-            border-radius: 15px;
-            padding: 25px;
-            border: 2px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .protocol-card:hover {
-            border-color: var(--gold);
-            transform: scale(1.02);
-        }
-
-        .protocol-card h4 {
-            color: var(--gold);
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-
-        .protocol-card .aka {
-            color: var(--blood-red);
-            font-style: italic;
-            margin-bottom: 15px;
-        }
-
-        .protocol-card .compounds {
-            color: var(--silver);
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-        }
-
-        .protocol-card .cost {
-            color: var(--gold);
-            font-weight: bold;
-        }
-
-        /* Commandments */
-        .commandments {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            padding: 40px;
-            margin: 60px 0;
-        }
-
-        .commandments-list {
-            list-style: none;
-            max-width: 600px;
+            background: conic-gradient(var(--gold) calc(var(--score) * 3.6deg), rgba(255,255,255,0.1) 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin: 0 auto;
         }
 
-        .commandments-list li {
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .commandments-list li:last-child {
-            border-bottom: none;
-        }
-
-        .commandment-num {
-            background: var(--blood-red);
-            color: white;
-            width: 30px;
-            height: 30px;
+        .score-inner {
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
+            background: var(--darker-bg);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
         }
 
-        /* CTA Section */
-        .cta-section {
-            text-align: center;
-            padding: 60px 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-        }
+        .score-value { font-size: 2.5rem; color: var(--gold); font-weight: bold; }
+        .score-label { color: var(--silver); font-size: 0.8rem; }
 
-        .cta-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 30px;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 15px 40px;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            text-decoration: none;
+        /* Protocol Cards */
+        .protocol-card {
+            background: linear-gradient(145deg, rgba(74, 14, 78, 0.5), rgba(26, 26, 46, 0.7));
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid transparent;
+            cursor: pointer;
             transition: all 0.3s;
         }
 
-        .btn-primary {
-            background: var(--gold);
-            color: var(--dark-bg);
-        }
+        .protocol-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+        .protocol-card h4 { color: var(--gold); margin-bottom: 5px; }
+        .protocol-card .aka { color: var(--blood-red); font-style: italic; font-size: 0.85rem; margin-bottom: 10px; }
+        .protocol-card .pathways { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 0; }
 
-        .btn-primary:hover {
-            background: white;
-            transform: scale(1.05);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--gold);
-            border: 2px solid var(--gold);
-        }
-
-        .btn-secondary:hover {
-            background: var(--gold);
-            color: var(--dark-bg);
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            border-top: 2px solid var(--gold);
-            margin-top: 60px;
-        }
-
-        footer p {
+        .pathway-tag {
+            background: rgba(139, 0, 0, 0.5);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
             color: var(--silver);
+        }
+
+        .protocol-card .cost { color: var(--gold); font-weight: bold; margin-top: 10px; }
+
+        /* Compound Table */
+        .compound-table { width: 100%; border-collapse: collapse; }
+        .compound-table th, .compound-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .compound-table th { color: var(--gold); font-weight: 600; background: rgba(0,0,0,0.2); }
+        .compound-table tr:hover { background: rgba(74, 14, 78, 0.3); }
+
+        .class-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .class-Metabolic { background: #1e88e5; }
+        .class-AntiInflammatory { background: #43a047; }
+        .class-Immune { background: #8e24aa; }
+        .class-Hormonal { background: #f4511e; }
+        .class-Angiogenesis { background: #00897b; }
+        .class-Detox { background: #6d4c41; }
+        .class-Antioxidant { background: #fdd835; color: #333; }
+
+        /* Biomarker Panel */
+        .biomarker-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 4px solid var(--gold);
+        }
+
+        .biomarker-card .marker-name { font-weight: 600; color: var(--text-light); }
+        .biomarker-card .marker-value { font-size: 1.5rem; color: var(--gold); margin: 5px 0; }
+        .biomarker-card .marker-range { font-size: 0.8rem; color: var(--silver); }
+
+        .status-optimal { border-left-color: var(--success); }
+        .status-warning { border-left-color: var(--warning); }
+        .status-critical { border-left-color: var(--danger); }
+
+        /* Schedule */
+        .schedule-window {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
             margin-bottom: 10px;
         }
 
-        .footer-tagline {
-            font-style: italic;
+        .schedule-window .time-badge {
+            background: var(--primary-purple);
             color: var(--gold);
-            font-size: 1.2rem;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-right: 20px;
+            min-width: 100px;
+            text-align: center;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-
-            .tagline {
-                font-size: 1.2rem;
-            }
-
-            .logo {
-                font-size: 3rem;
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-            }
+        .schedule-window .compounds-list { flex: 1; }
+        .schedule-window .compound-pill {
+            display: inline-block;
+            background: rgba(139, 0, 0, 0.5);
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin: 2px;
         }
 
-        /* Bat animation background */
-        .bat-bg {
+        /* Community Members */
+        .member-card {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .member-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+
+        .member-info { flex: 1; }
+        .member-info .name { font-weight: 600; color: var(--gold); }
+        .member-info .joined { font-size: 0.8rem; color: var(--silver); }
+
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; margin: 2px; background: var(--blood-red); }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary { background: var(--gold); color: var(--dark-bg); }
+        .btn-primary:hover { background: #fff; }
+        .btn-secondary { background: transparent; color: var(--gold); border: 2px solid var(--gold); }
+        .btn-secondary:hover { background: var(--gold); color: var(--dark-bg); }
+
+        /* Message Bubble */
+        .rackula-message {
+            background: linear-gradient(145deg, rgba(74, 14, 78, 0.8), rgba(26, 26, 46, 0.9));
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid var(--gold);
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .rackula-message::before {
+            content: '🦇';
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            font-size: 1.5rem;
+            background: var(--darker-bg);
+            padding: 0 10px;
+        }
+
+        .rackula-message p { line-height: 1.8; }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
         }
 
-        .flying-bat {
-            position: absolute;
-            font-size: 2rem;
-            opacity: 0.1;
-            animation: fly 20s linear infinite;
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: var(--darker-bg);
+            border-radius: 15px;
+            border: 2px solid var(--gold);
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
-        @keyframes fly {
-            0% {
-                transform: translate(-100px, 100vh) rotate(0deg);
-            }
-            100% {
-                transform: translate(100vw, -100px) rotate(360deg);
-            }
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--primary-purple);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 { color: var(--gold); }
+        .modal-close { background: none; border: none; color: var(--silver); font-size: 1.5rem; cursor: pointer; }
+        .modal-body { padding: 20px; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar { width: 70px; }
+            .sidebar-header h1, .sidebar-header .tagline, .nav-item .label, .nav-section-title { display: none; }
+            .nav-item { justify-content: center; padding: 15px; }
+            .nav-item .icon { margin: 0; }
+            .main-content { margin-left: 70px; }
         }
     </style>
 </head>
 <body>
-    <div class="bat-bg">
-        <span class="flying-bat" style="animation-delay: 0s; top: 20%;">🦇</span>
-        <span class="flying-bat" style="animation-delay: 5s; top: 40%;">🦇</span>
-        <span class="flying-bat" style="animation-delay: 10s; top: 60%;">🦇</span>
-        <span class="flying-bat" style="animation-delay: 15s; top: 80%;">🦇</span>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">🦇</div>
+            <h1>Count Rackula</h1>
+            <p class="tagline">"Save The Tracts!"</p>
+        </div>
+        <div class="nav-menu">
+            <div class="nav-section-title">Main</div>
+            <a class="nav-item active" data-page="dashboard">
+                <span class="icon">📊</span>
+                <span class="label">Dashboard</span>
+            </a>
+            <a class="nav-item" data-page="protocols">
+                <span class="icon">📋</span>
+                <span class="label">Protocols</span>
+            </a>
+            <a class="nav-item" data-page="compounds">
+                <span class="icon">💊</span>
+                <span class="label">Compounds</span>
+            </a>
+            <a class="nav-item" data-page="biomarkers">
+                <span class="icon">🔬</span>
+                <span class="label">Biomarkers</span>
+            </a>
+            <a class="nav-item" data-page="schedule">
+                <span class="icon">⏰</span>
+                <span class="label">Schedule</span>
+            </a>
+
+            <div class="nav-section-title">Services</div>
+            <a class="nav-item" data-page="fittit">
+                <span class="icon">👙</span>
+                <span class="label">FITTIT</span>
+            </a>
+            <a class="nav-item" data-page="community">
+                <span class="icon">🏰</span>
+                <span class="label">The Coven</span>
+            </a>
+            <a class="nav-item" data-page="rackula">
+                <span class="icon">🦇</span>
+                <span class="label">Ask Rackula</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Dashboard Page -->
+        <div class="page-view active" id="page-dashboard">
+            <div class="page-header">
+                <div>
+                    <h2>Dashboard</h2>
+                    <p class="subtitle">Good evening, Countess Teresa! Welcome to your castle.</p>
+                </div>
+                <button class="btn btn-primary" onclick="showMessage()">🦇 Hear from the Count</button>
+            </div>
+            <div class="page-content">
+                <div class="rackula-message">
+                    <p><strong>Good evening, darling...</strong> Your protocol adherence is looking magnificent!
+                    Your Vitamin D levels have risen to optimal range - the Count is pleased!
+                    Remember to take your evening supplements with dinner. The night is dark and full of... hope!</p>
+                </div>
+
+                <div class="grid-4" style="margin-bottom: 30px;">
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-value">47</div>
+                        <div class="stat-label">Days on Protocol</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💊</div>
+                        <div class="stat-value">94%</div>
+                        <div class="stat-label">Adherence Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔬</div>
+                        <div class="stat-value">5/6</div>
+                        <div class="stat-label">Biomarkers Optimal</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-value">+12%</div>
+                        <div class="stat-label">Improvement</div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">🦇 Rackula Score</span>
+                        </div>
+                        <div class="score-ring" style="--score: 82">
+                            <div class="score-inner">
+                                <div class="score-value">82</div>
+                                <div class="score-label">Excellent</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px; text-align: center;">
+                            <p style="color: var(--silver); font-size: 0.85rem;">
+                                Biomarkers: 26/30 | Adherence: 23/25 | Lifestyle: 18/20 | Progress: 10/15 | Engagement: 5/10
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Current Protocol</span>
+                            <span class="badge">Active</span>
+                        </div>
+                        <h3 style="color: var(--gold); margin-bottom: 5px;">Triple-Negative Destroyer</h3>
+                        <p style="color: var(--blood-red); font-style: italic; margin-bottom: 15px;">"The Hostile Takeover"</p>
+                        <p style="color: var(--silver); margin-bottom: 15px;">Metabolic starvation + multi-pathway blockade targeting TNBC</p>
+                        <div class="pathways">
+                            <span class="pathway-tag">AMPK</span>
+                            <span class="pathway-tag">mTOR</span>
+                            <span class="pathway-tag">Warburg</span>
+                            <span class="pathway-tag">NF-κB</span>
+                            <span class="pathway-tag">VEGF</span>
+                        </div>
+                        <p class="cost">~$150/month</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Upcoming Schedule</span>
+                        <a href="#" onclick="navigate('schedule')" style="color: var(--gold);">View Full Schedule →</a>
+                    </div>
+                    <div class="schedule-window">
+                        <div class="time-badge">Evening<br>6-7 PM</div>
+                        <div class="compounds-list">
+                            <span class="compound-pill">Aspirin 81mg</span>
+                            <span class="compound-pill">DIM 200mg</span>
+                            <span class="compound-pill">NAC 600mg</span>
+                            <span class="compound-pill">Resveratrol 250mg</span>
+                        </div>
+                    </div>
+                    <div class="schedule-window">
+                        <div class="time-badge">Bedtime<br>9-10 PM</div>
+                        <div class="compounds-list">
+                            <span class="compound-pill">Melatonin 20mg</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Protocols Page -->
+        <div class="page-view" id="page-protocols">
+            <div class="page-header">
+                <div>
+                    <h2>Protocol Formulations</h2>
+                    <p class="subtitle">Evidence-based treatment protocols for different cancer types</p>
+                </div>
+            </div>
+            <div class="page-content">
+                <div class="grid-2">
+                    <div class="protocol-card" onclick="showProtocolDetail('tnbc')">
+                        <h4>Triple-Negative Destroyer</h4>
+                        <p class="aka">"The Hostile Takeover"</p>
+                        <p style="color: var(--silver); font-size: 0.9rem;">Metabolic starvation + multi-pathway blockade</p>
+                        <div class="pathways">
+                            <span class="pathway-tag">AMPK</span>
+                            <span class="pathway-tag">mTOR</span>
+                            <span class="pathway-tag">Warburg</span>
+                            <span class="pathway-tag">NF-κB</span>
+                            <span class="pathway-tag">VEGF</span>
+                        </div>
+                        <p style="color: var(--silver); font-size: 0.85rem; margin-top: 10px;">
+                            Metformin, Aspirin, D3, Melatonin, Curcumin, EGCG
+                        </p>
+                        <p class="cost">~$150/month</p>
+                    </div>
+
+                    <div class="protocol-card" onclick="showProtocolDetail('er')">
+                        <h4>ER+ Hormone Harmony</h4>
+                        <p class="aka">"The Peaceful Transition"</p>
+                        <p style="color: var(--silver); font-size: 0.9rem;">Estrogen metabolism optimization</p>
+                        <div class="pathways">
+                            <span class="pathway-tag">Hormonal</span>
+                            <span class="pathway-tag">Aromatase</span>
+                            <span class="pathway-tag">SIRT1</span>
+                            <span class="pathway-tag">VDR</span>
+                        </div>
+                        <p style="color: var(--silver); font-size: 0.85rem; margin-top: 10px;">
+                            DIM, Resveratrol, Quercetin, Selenium, Omega-3, D3
+                        </p>
+                        <p class="cost">~$120/month</p>
+                    </div>
+
+                    <div class="protocol-card" onclick="showProtocolDetail('her2')">
+                        <h4>HER2+ Targeted Torpedo</h4>
+                        <p class="aka">"Smart Bomb"</p>
+                        <p style="color: var(--silver); font-size: 0.9rem;">HER2 inhibition + stem cell elimination</p>
+                        <div class="pathways">
+                            <span class="pathway-tag">HER2</span>
+                            <span class="pathway-tag">StemCell</span>
+                            <span class="pathway-tag">Immune</span>
+                            <span class="pathway-tag">Metastasis</span>
+                        </div>
+                        <p style="color: var(--silver); font-size: 0.85rem; margin-top: 10px;">
+                            Berberine, Omega-3, MCP, Turkey Tail, Sulforaphane, NAC
+                        </p>
+                        <p class="cost">~$180/month</p>
+                    </div>
+
+                    <div class="protocol-card" onclick="showProtocolDetail('brca')">
+                        <h4>BRCA Guardian</h4>
+                        <p class="aka">"The DNA Defender"</p>
+                        <p style="color: var(--silver); font-size: 0.9rem;">DNA repair + detoxification</p>
+                        <div class="pathways">
+                            <span class="pathway-tag">p53</span>
+                            <span class="pathway-tag">Detox</span>
+                            <span class="pathway-tag">SIRT1</span>
+                            <span class="pathway-tag">VDR</span>
+                        </div>
+                        <p style="color: var(--silver); font-size: 0.85rem; margin-top: 10px;">
+                            Sulforaphane, DIM, D3, Selenium, NAC, Resveratrol
+                        </p>
+                        <p class="cost">~$140/month</p>
+                    </div>
+
+                    <div class="protocol-card" onclick="showProtocolDetail('prevention')">
+                        <h4>Prevention Protocol</h4>
+                        <p class="aka">"Teresa's Daily Defense"</p>
+                        <p style="color: var(--silver); font-size: 0.9rem;">Baseline protection + risk reduction</p>
+                        <div class="pathways">
+                            <span class="pathway-tag">VDR</span>
+                            <span class="pathway-tag">Immune</span>
+                            <span class="pathway-tag">Hormonal</span>
+                        </div>
+                        <p style="color: var(--silver); font-size: 0.85rem; margin-top: 10px;">
+                            D3, Omega-3, EGCG, DIM, Selenium
+                        </p>
+                        <p class="cost">~$60/month</p>
+                    </div>
+
+                    <div class="protocol-card" onclick="showProtocolDetail('maintenance')">
+                        <h4>Maintenance Mode</h4>
+                        <p class="aka">"The Vigilant Watch"</p>
+                        <p style="color: var(--silver); font-size: 0.9rem;">Sustained immune support</p>
+                        <div class="pathways">
+                            <span class="pathway-tag">Immune</span>
+                            <span class="pathway-tag">VDR</span>
+                            <span class="pathway-tag">NF-κB</span>
+                        </div>
+                        <p style="color: var(--silver); font-size: 0.85rem; margin-top: 10px;">
+                            D3, Omega-3, Turkey Tail, Curcumin, Selenium
+                        </p>
+                        <p class="cost">~$80/month</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compounds Page -->
+        <div class="page-view" id="page-compounds">
+            <div class="page-header">
+                <div>
+                    <h2>Compound Library</h2>
+                    <p class="subtitle">16 evidence-based compounds with mechanisms and dosing</p>
+                </div>
+            </div>
+            <div class="page-content">
+                <div class="card">
+                    <table class="compound-table">
+                        <thead>
+                            <tr>
+                                <th>Compound</th>
+                                <th>Class</th>
+                                <th>Dose</th>
+                                <th>Key Pathways</th>
+                                <th>Evidence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr onclick="showCompoundDetail('met')">
+                                <td><strong>Metformin</strong></td>
+                                <td><span class="class-badge class-Metabolic">Metabolic</span></td>
+                                <td>500mg</td>
+                                <td>AMPK, mTOR, Warburg</td>
+                                <td>RR 0.69 (Meta)</td>
+                            </tr>
+                            <tr onclick="showCompoundDetail('asa')">
+                                <td><strong>Aspirin</strong></td>
+                                <td><span class="class-badge class-AntiInflammatory">Anti-Inflam</span></td>
+                                <td>81mg</td>
+                                <td>COX-2, Metastasis</td>
+                                <td>RR 0.53 (Meta)</td>
+                            </tr>
+                            <tr onclick="showCompoundDetail('d3')">
+                                <td><strong>Vitamin D3</strong></td>
+                                <td><span class="class-badge class-Immune">Immune</span></td>
+                                <td>10,000 IU</td>
+                                <td>VDR, p53, Apoptosis</td>
+                                <td>RR 0.35 (RCT)</td>
+                            </tr>
+                            <tr onclick="showCompoundDetail('mel')">
+                                <td><strong>Melatonin</strong></td>
+                                <td><span class="class-badge class-Immune">Immune</span></td>
+                                <td>20mg</td>
+                                <td>Hormonal, Apoptosis</td>
+                                <td>RR 0.55 (Meta)</td>
+                            </tr>
+                            <tr onclick="showCompoundDetail('cur')">
+                                <td><strong>Curcumin</strong></td>
+                                <td><span class="class-badge class-AntiInflammatory">Anti-Inflam</span></td>
+                                <td>1000mg</td>
+                                <td>NF-κB, VEGF</td>
+                                <td>RR 0.45 (Meta)</td>
+                            </tr>
+                            <tr onclick="showCompoundDetail('egcg')">
+                                <td><strong>EGCG</strong></td>
+                                <td><span class="class-badge class-Angiogenesis">Angiogenesis</span></td>
+                                <td>500mg</td>
+                                <td>VEGF, HER2</td>
+                                <td>RR 0.58 (Cohort)</td>
+                            </tr>
+                            <tr onclick="showCompoundDetail('bbr')">
+                                <td><strong>Berberine</strong></td>
+                                <td><span class="class-badge class-Metabolic">Metabolic</span></td>
+                                <td>500mg</td>
+                                <td>AMPK, HER2, StemCell</td>
+                                <td>RR 0.62 (RCT)</td>
+                            </tr>
+                            <tr onclick="showCompoundDetail('dim')">
+                                <td><strong>DIM</strong></td>
+                                <td><span class="class-badge class-Hormonal">Hormonal</span></td>
+                                <td>200mg</td>
+                                <td>Hormonal, Aromatase</td>
+                                <td>RR 0.48 (RCT)</td>
+                            </tr>
+                            <tr onclick="showCompoundDetail('sul')">
+                                <td><strong>Sulforaphane</strong></td>
+                                <td><span class="class-badge class-Detox">Detox</span></td>
+                                <td>400mcg</td>
+                                <td>StemCell, Nrf2</td>
+                                <td>RR 0.35 (RCT)</td>
+                            </tr>
+                            <tr onclick="showCompoundDetail('tt')">
+                                <td><strong>Turkey Tail</strong></td>
+                                <td><span class="class-badge class-Immune">Immune</span></td>
+                                <td>3000mg</td>
+                                <td>Immune (PSK/PSP)</td>
+                                <td>2x Survival (RCT)</td>
+                            </tr>
+                            <tr onclick="showCompoundDetail('nac')">
+                                <td><strong>NAC</strong></td>
+                                <td><span class="class-badge class-Detox">Detox</span></td>
+                                <td>600mg</td>
+                                <td>Glutathione, Detox</td>
+                                <td>Supportive</td>
+                            </tr>
+                            <tr onclick="showCompoundDetail('qrc')">
+                                <td><strong>Quercetin</strong></td>
+                                <td><span class="class-badge class-Angiogenesis">Angiogenesis</span></td>
+                                <td>500mg</td>
+                                <td>VEGF, NF-κB</td>
+                                <td>Supportive</td>
+                            </tr>
+                            <tr onclick="showCompoundDetail('mcp')">
+                                <td><strong>Modified Citrus Pectin</strong></td>
+                                <td><span class="class-badge class-Angiogenesis">Angiogenesis</span></td>
+                                <td>5g</td>
+                                <td>Galectin-3, Metastasis</td>
+                                <td>RR 0.65 (Cohort)</td>
+                            </tr>
+                            <tr onclick="showCompoundDetail('rsv')">
+                                <td><strong>Resveratrol</strong></td>
+                                <td><span class="class-badge class-Hormonal">Hormonal</span></td>
+                                <td>250mg</td>
+                                <td>SIRT1, Autophagy</td>
+                                <td>Supportive</td>
+                            </tr>
+                            <tr onclick="showCompoundDetail('sel')">
+                                <td><strong>Selenium</strong></td>
+                                <td><span class="class-badge class-Antioxidant">Antioxidant</span></td>
+                                <td>200mcg</td>
+                                <td>Detox, Thyroid</td>
+                                <td>Supportive</td>
+                            </tr>
+                            <tr onclick="showCompoundDetail('omg3')">
+                                <td><strong>Omega-3</strong></td>
+                                <td><span class="class-badge class-AntiInflammatory">Anti-Inflam</span></td>
+                                <td>2g</td>
+                                <td>COX-2, NF-κB</td>
+                                <td>RR 0.72 (Meta)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biomarkers Page -->
+        <div class="page-view" id="page-biomarkers">
+            <div class="page-header">
+                <div>
+                    <h2>Biomarker Tracking</h2>
+                    <p class="subtitle">Monitor your key health indicators</p>
+                </div>
+                <button class="btn btn-primary">+ Log New Reading</button>
+            </div>
+            <div class="page-content">
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Tumor Markers</span></div>
+                    <div class="grid-3">
+                        <div class="biomarker-card status-optimal">
+                            <div class="marker-name">CA 15-3</div>
+                            <div class="marker-value">18 <span style="font-size: 0.8rem;">U/mL</span></div>
+                            <div class="marker-range">Optimal: 0-30 | ↓ 15%</div>
+                        </div>
+                        <div class="biomarker-card status-optimal">
+                            <div class="marker-name">CA 27-29</div>
+                            <div class="marker-value">24 <span style="font-size: 0.8rem;">U/mL</span></div>
+                            <div class="marker-range">Optimal: 0-38 | Stable</div>
+                        </div>
+                        <div class="biomarker-card status-optimal">
+                            <div class="marker-name">CEA</div>
+                            <div class="marker-value">1.8 <span style="font-size: 0.8rem;">ng/mL</span></div>
+                            <div class="marker-range">Optimal: 0-3 | ↓ 10%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Inflammation Markers</span></div>
+                    <div class="grid-3">
+                        <div class="biomarker-card status-optimal">
+                            <div class="marker-name">CRP</div>
+                            <div class="marker-value">0.4 <span style="font-size: 0.8rem;">mg/L</span></div>
+                            <div class="marker-range">Optimal: 0-1 | ↓ 60%</div>
+                        </div>
+                        <div class="biomarker-card status-optimal">
+                            <div class="marker-name">ESR</div>
+                            <div class="marker-value">12 <span style="font-size: 0.8rem;">mm/hr</span></div>
+                            <div class="marker-range">Optimal: 0-20 | Stable</div>
+                        </div>
+                        <div class="biomarker-card status-warning">
+                            <div class="marker-name">IL-6</div>
+                            <div class="marker-value">8.5 <span style="font-size: 0.8rem;">pg/mL</span></div>
+                            <div class="marker-range">Optimal: 0-7 | ↑ Action needed</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Metabolic Markers</span></div>
+                    <div class="grid-4">
+                        <div class="biomarker-card status-optimal">
+                            <div class="marker-name">Fasting Glucose</div>
+                            <div class="marker-value">82 <span style="font-size: 0.8rem;">mg/dL</span></div>
+                            <div class="marker-range">Optimal: 70-85</div>
+                        </div>
+                        <div class="biomarker-card status-optimal">
+                            <div class="marker-name">Fasting Insulin</div>
+                            <div class="marker-value">4.2 <span style="font-size: 0.8rem;">uIU/mL</span></div>
+                            <div class="marker-range">Optimal: 2-5</div>
+                        </div>
+                        <div class="biomarker-card status-optimal">
+                            <div class="marker-name">HbA1c</div>
+                            <div class="marker-value">5.1 <span style="font-size: 0.8rem;">%</span></div>
+                            <div class="marker-range">Optimal: 4.5-5.2</div>
+                        </div>
+                        <div class="biomarker-card status-optimal">
+                            <div class="marker-name">IGF-1</div>
+                            <div class="marker-value">128 <span style="font-size: 0.8rem;">ng/mL</span></div>
+                            <div class="marker-range">Optimal: 50-150</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Nutritional Markers</span></div>
+                    <div class="grid-4">
+                        <div class="biomarker-card status-optimal">
+                            <div class="marker-name">Vitamin D</div>
+                            <div class="marker-value">68 <span style="font-size: 0.8rem;">ng/mL</span></div>
+                            <div class="marker-range">Optimal: 60-80 | ↑ 45%</div>
+                        </div>
+                        <div class="biomarker-card status-optimal">
+                            <div class="marker-name">Omega-3 Index</div>
+                            <div class="marker-value">9.2 <span style="font-size: 0.8rem;">%</span></div>
+                            <div class="marker-range">Optimal: 8-12</div>
+                        </div>
+                        <div class="biomarker-card status-optimal">
+                            <div class="marker-name">RBC Magnesium</div>
+                            <div class="marker-value">5.8 <span style="font-size: 0.8rem;">mg/dL</span></div>
+                            <div class="marker-range">Optimal: 5.5-6.5</div>
+                        </div>
+                        <div class="biomarker-card status-optimal">
+                            <div class="marker-name">Ferritin</div>
+                            <div class="marker-value">85 <span style="font-size: 0.8rem;">ng/mL</span></div>
+                            <div class="marker-range">Optimal: 50-150</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schedule Page -->
+        <div class="page-view" id="page-schedule">
+            <div class="page-header">
+                <div>
+                    <h2>Dosing Schedule</h2>
+                    <p class="subtitle">Your daily supplement protocol timing</p>
+                </div>
+            </div>
+            <div class="page-content">
+                <div class="card">
+                    <div class="schedule-window">
+                        <div class="time-badge">☀️ Morning<br>6-8 AM</div>
+                        <div class="compounds-list">
+                            <span class="compound-pill">Metformin 500mg</span>
+                            <span class="compound-pill">Vitamin D3 10,000 IU</span>
+                            <span class="compound-pill">Omega-3 2g</span>
+                            <span class="compound-pill">Selenium 200mcg</span>
+                            <span class="compound-pill">MCP 5g</span>
+                            <span class="compound-pill">Berberine 500mg</span>
+                        </div>
+                        <div style="margin-left: 20px; color: var(--silver); font-size: 0.85rem;">
+                            ✓ Take with breakfast
+                        </div>
+                    </div>
+
+                    <div class="schedule-window">
+                        <div class="time-badge">🌤️ Noon<br>12-1 PM</div>
+                        <div class="compounds-list">
+                            <span class="compound-pill">Curcumin 1000mg</span>
+                            <span class="compound-pill">EGCG 500mg</span>
+                            <span class="compound-pill">Quercetin 500mg</span>
+                            <span class="compound-pill">Turkey Tail 3000mg</span>
+                        </div>
+                        <div style="margin-left: 20px; color: var(--silver); font-size: 0.85rem;">
+                            ✓ Take with lunch
+                        </div>
+                    </div>
+
+                    <div class="schedule-window">
+                        <div class="time-badge">🌆 Evening<br>6-7 PM</div>
+                        <div class="compounds-list">
+                            <span class="compound-pill">Aspirin 81mg</span>
+                            <span class="compound-pill">DIM 200mg</span>
+                            <span class="compound-pill">NAC 600mg</span>
+                            <span class="compound-pill">Resveratrol 250mg</span>
+                        </div>
+                        <div style="margin-left: 20px; color: var(--silver); font-size: 0.85rem;">
+                            ✓ Take with dinner
+                        </div>
+                    </div>
+
+                    <div class="schedule-window">
+                        <div class="time-badge">🌙 Bedtime<br>9-10 PM</div>
+                        <div class="compounds-list">
+                            <span class="compound-pill">Melatonin 20mg</span>
+                        </div>
+                        <div style="margin-left: 20px; color: var(--silver); font-size: 0.85rem;">
+                            ✓ Empty stomach, 30-60 min before sleep
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Fasting Protocol</span></div>
+                    <p style="color: var(--silver);">
+                        <strong style="color: var(--gold);">16:8 Time-Restricted Eating</strong><br>
+                        Eating window: 10 AM - 6 PM (16 hours fasting)<br>
+                        This enhances the metabolic effects of your protocol.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FITTIT Page -->
+        <div class="page-view" id="page-fittit">
+            <div class="page-header">
+                <div>
+                    <h2>FITTIT System</h2>
+                    <p class="subtitle">Custom 3D-printed therapeutic bras</p>
+                </div>
+                <button class="btn btn-primary">Start New Order</button>
+            </div>
+            <div class="page-content">
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header"><span class="card-title">Available Styles</span></div>
+                        <div class="grid-2">
+                            <div class="protocol-card">
+                                <h4>Everyday</h4>
+                                <p style="color: var(--silver); font-size: 0.85rem;">Wire-free, moisture-wicking, adjustable</p>
+                                <p class="cost">$249</p>
+                            </div>
+                            <div class="protocol-card">
+                                <h4>Sport</h4>
+                                <p style="color: var(--silver); font-size: 0.85rem;">Racer back, seamless, high support</p>
+                                <p class="cost">$279</p>
+                            </div>
+                            <div class="protocol-card">
+                                <h4>Sleep</h4>
+                                <p style="color: var(--silver); font-size: 0.85rem;">Ultra-soft silicone, seamless</p>
+                                <p class="cost">$199</p>
+                            </div>
+                            <div class="protocol-card">
+                                <h4>Post-Surgical</h4>
+                                <p style="color: var(--silver); font-size: 0.85rem;">Front closure, pocketed, gentle support</p>
+                                <p class="cost">$399</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header"><span class="card-title">Therapeutic Add-ons</span></div>
+                        <div style="color: var(--silver);">
+                            <p style="margin-bottom: 10px;">✓ <strong>Compression Zones</strong> - Targeted support (+$25)</p>
+                            <p style="margin-bottom: 10px;">✓ <strong>Massage Nodes</strong> - Lymphatic support (+$25)</p>
+                            <p style="margin-bottom: 10px;">✓ <strong>Heat Therapy</strong> - Warming zones (+$25)</p>
+                            <p style="margin-bottom: 10px;">✓ <strong>Cooling Zones</strong> - Temperature regulation (+$25)</p>
+                            <p>✓ <strong>Topical Delivery</strong> - Compound infusion zones (+$25)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span class="card-title">How It Works</span></div>
+                    <div class="grid-4">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">📱</div>
+                            <strong style="color: var(--gold);">1. Scan</strong>
+                            <p style="color: var(--silver); font-size: 0.85rem;">Upload 3D scan or photos</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">✏️</div>
+                            <strong style="color: var(--gold);">2. Design</strong>
+                            <p style="color: var(--silver); font-size: 0.85rem;">AI generates custom fit</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">🖨️</div>
+                            <strong style="color: var(--gold);">3. Print</strong>
+                            <p style="color: var(--silver); font-size: 0.85rem;">3D printed to spec</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">📦</div>
+                            <strong style="color: var(--gold);">4. Deliver</strong>
+                            <p style="color: var(--silver); font-size: 0.85rem;">Ships in 7 days</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Community Page -->
+        <div class="page-view" id="page-community">
+            <div class="page-header">
+                <div>
+                    <h2>The Coven</h2>
+                    <p class="subtitle">Community support and connection</p>
+                </div>
+                <button class="btn btn-primary">Find a Mentor</button>
+            </div>
+            <div class="page-content">
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header"><span class="card-title">Support Circles</span></div>
+                        <div class="member-card" style="cursor: pointer;">
+                            <div class="member-avatar">🎀</div>
+                            <div class="member-info">
+                                <div class="name">TNBC Warriors</div>
+                                <div class="joined">Weekly • Wednesdays 7 PM • Video</div>
+                            </div>
+                            <span class="badge">12 members</span>
+                        </div>
+                        <div class="member-card" style="cursor: pointer;">
+                            <div class="member-avatar">🌸</div>
+                            <div class="member-info">
+                                <div class="name">ER+ Support Group</div>
+                                <div class="joined">Bi-weekly • Mondays 6 PM • Hybrid</div>
+                            </div>
+                            <span class="badge">18 members</span>
+                        </div>
+                        <div class="member-card" style="cursor: pointer;">
+                            <div class="member-avatar">🧬</div>
+                            <div class="member-info">
+                                <div class="name">BRCA Previvors</div>
+                                <div class="joined">Monthly • 1st Saturday • Video</div>
+                            </div>
+                            <span class="badge">25 members</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header"><span class="card-title">Badge Progress</span></div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            <div style="text-align: center; padding: 10px;">
+                                <div style="font-size: 2rem;">🦇</div>
+                                <div style="color: var(--gold); font-size: 0.8rem;">Initiate</div>
+                                <div style="color: var(--success); font-size: 0.7rem;">✓ Earned</div>
+                            </div>
+                            <div style="text-align: center; padding: 10px;">
+                                <div style="font-size: 2rem;">⚔️</div>
+                                <div style="color: var(--gold); font-size: 0.8rem;">Survivor</div>
+                                <div style="color: var(--success); font-size: 0.7rem;">✓ Earned</div>
+                            </div>
+                            <div style="text-align: center; padding: 10px;">
+                                <div style="font-size: 2rem;">🛡️</div>
+                                <div style="color: var(--gold); font-size: 0.8rem;">Warrior</div>
+                                <div style="color: var(--warning); font-size: 0.7rem;">43 days left</div>
+                            </div>
+                            <div style="text-align: center; padding: 10px; opacity: 0.5;">
+                                <div style="font-size: 2rem;">👑</div>
+                                <div style="color: var(--silver); font-size: 0.8rem;">Guardian</div>
+                                <div style="color: var(--silver); font-size: 0.7rem;">6 months</div>
+                            </div>
+                            <div style="text-align: center; padding: 10px; opacity: 0.5;">
+                                <div style="font-size: 2rem;">🏰</div>
+                                <div style="color: var(--silver); font-size: 0.8rem;">Elder</div>
+                                <div style="color: var(--silver); font-size: 0.7rem;">1 year</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Recent Resources</span></div>
+                    <div class="member-card">
+                        <div class="member-avatar">🥗</div>
+                        <div class="member-info">
+                            <div class="name">Anti-Cancer Mediterranean Meal Plan</div>
+                            <div class="joined">Recipe • By Countess Maria • 142 helpful votes</div>
+                        </div>
+                        <span class="badge" style="background: var(--success);">Verified</span>
+                    </div>
+                    <div class="member-card">
+                        <div class="member-avatar">📖</div>
+                        <div class="member-info">
+                            <div class="name">My TNBC Journey: From Diagnosis to Remission</div>
+                            <div class="joined">Story • By Countess Sarah • 89 helpful votes</div>
+                        </div>
+                    </div>
+                    <div class="member-card">
+                        <div class="member-avatar">💊</div>
+                        <div class="member-info">
+                            <div class="name">Bulk Supplement Supplier List</div>
+                            <div class="joined">Supplier • By Countess Lisa • 56 helpful votes</div>
+                        </div>
+                        <span class="badge" style="background: var(--success);">Verified</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ask Rackula Page -->
+        <div class="page-view" id="page-rackula">
+            <div class="page-header">
+                <div>
+                    <h2>Ask Count Rackula</h2>
+                    <p class="subtitle">Your gothic guide to metabolic oncology</p>
+                </div>
+            </div>
+            <div class="page-content">
+                <div class="rackula-message">
+                    <p><strong>Good evening, darling!</strong> I am Count Rackula, Mistress of Mammary Medicine.
+                    I vant to help you understand your protocol, answer your questions, and guide you through the night!</p>
+                    <p style="margin-top: 15px;">Ask me about:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px; color: var(--silver);">
+                        <li>Your supplement protocol and timing</li>
+                        <li>How specific compounds work</li>
+                        <li>Interpreting your biomarkers</li>
+                        <li>Lifestyle recommendations</li>
+                        <li>The Count's Commandments</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span class="card-title">The Count's Commandments</span></div>
+                    <div style="color: var(--silver);">
+                        <p style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <strong style="color: var(--blood-red);">I.</strong> <strong>Thou Shalt Not Feed the Cancer</strong> — Cut the sugar, starve the beast
+                        </p>
+                        <p style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <strong style="color: var(--blood-red);">II.</strong> <strong>Honor Thy Circadian Rhythm</strong> — Even creatures of the night need 8 hours
+                        </p>
+                        <p style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <strong style="color: var(--blood-red);">III.</strong> <strong>Keep Holy the Hormone Balance</strong> — Know thy numbers
+                        </p>
+                        <p style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <strong style="color: var(--blood-red);">IV.</strong> <strong>Remember the Lymph Day</strong> — Move that body!
+                        </p>
+                        <p style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <strong style="color: var(--blood-red);">V.</strong> <strong>Take Thy Supplements Daily</strong> — Consistency is your armor
+                        </p>
+                        <p style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <strong style="color: var(--blood-red);">VI.</strong> <strong>Know Thy Biomarkers</strong> — Test often, know always
+                        </p>
+                        <p style="padding: 10px 0;">
+                            <strong style="color: var(--blood-red);">VII.</strong> <strong>Embrace the Coven</strong> — You are not alone in this castle
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="text-align: center; padding: 20px;">
+                        <p style="color: var(--gold); font-size: 1.2rem; font-style: italic; margin-bottom: 20px;">
+                            "The night is dark and full of... hope!"
+                        </p>
+                        <p style="color: var(--silver);">
+                            #SaveTheTracts #TeamRackula #CountOnTheCount
+                        </p>
+                        <div style="font-size: 3rem; margin-top: 20px;">🦇</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <header>
-        <div class="logo">🦇</div>
-        <h1>Count Rackula</h1>
-        <p class="tagline">"I vant to save your racks! Blah!"</p>
-        <p>Enterprise-Scale Metabolic Oncology Protocol System</p>
-        <div class="hashtags">
-            <span class="hashtag">#SaveTheTracts</span>
-            <span class="hashtag">#TeamRackula</span>
-            <span class="hashtag">#CountOnTheCount</span>
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">Details</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
         </div>
-    </header>
+    </div>
 
-    <main class="container">
-        <section class="intro">
-            <p>
-                <strong>Good evening, darlings...</strong> Welcome to Castle RACK, where evidence-based
-                metabolic oncology meets gothic glam. Count Rackula is your guide through the night,
-                offering comprehensive supplement protocols for breast cancer prevention, treatment
-                enhancement, and survivorship.
-            </p>
-            <p>
-                Built on the KONOMI STANDARD, this enterprise-scale system provides everything from
-                compound management to biomarker tracking, all wrapped in a supportive community
-                we call <strong>The Coven</strong>.
-            </p>
-        </section>
+    <script>
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const page = item.dataset.page;
+                navigate(page);
+            });
+        });
 
-        <section class="layers-section">
-            <h2 class="section-title">System Architecture</h2>
-            <div class="layers-grid">
-                <div class="layer-card">
-                    <span class="layer-number">1</span>
-                    <h3>Base UDTs</h3>
-                    <p>Healthcare primitives and core type definitions for the entire system.</p>
-                </div>
-                <div class="layer-card">
-                    <span class="layer-number">2</span>
-                    <h3>Compound System</h3>
-                    <p>16 evidence-based compounds with interaction checking and synergy scoring.</p>
-                </div>
-                <div class="layer-card">
-                    <span class="layer-number">3</span>
-                    <h3>Protocol Engine</h3>
-                    <p>Treatment protocol management with formulations for each cancer type.</p>
-                </div>
-                <div class="layer-card">
-                    <span class="layer-number">4</span>
-                    <h3>Monitoring</h3>
-                    <p>Biomarker tracking, trend analysis, and the Rackula Score dashboard.</p>
-                </div>
-                <div class="layer-card">
-                    <span class="layer-number">5</span>
-                    <h3>AI Persona</h3>
-                    <p>Count Rackula's personality engine for educational and motivational content.</p>
-                </div>
-                <div class="layer-card">
-                    <span class="layer-number">6</span>
-                    <h3>FITTIT System</h3>
-                    <p>3D-printed custom therapeutic bras with personalized fit and features.</p>
-                </div>
-                <div class="layer-card">
-                    <span class="layer-number">7</span>
-                    <h3>The Coven</h3>
-                    <p>Community support with circles, mentor matching, and resource sharing.</p>
-                </div>
-                <div class="layer-card">
-                    <span class="layer-number">9</span>
-                    <h3>Enterprise API</h3>
-                    <p>RESTful endpoints for all services with comprehensive schemas.</p>
-                </div>
-            </div>
-        </section>
+        function navigate(page) {
+            // Update nav
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelector(`[data-page="${page}"]`).classList.add('active');
 
-        <section class="protocols-section">
-            <h2 class="section-title">Protocol Formulations</h2>
-            <div class="protocols-grid">
-                <div class="protocol-card">
-                    <h4>Triple-Negative Destroyer</h4>
-                    <p class="aka">"The Hostile Takeover"</p>
-                    <p class="compounds">Metformin, Aspirin, D3, Melatonin, Curcumin, EGCG</p>
-                    <p class="cost">~$150/month</p>
-                </div>
-                <div class="protocol-card">
-                    <h4>ER+ Hormone Harmony</h4>
-                    <p class="aka">"The Peaceful Transition"</p>
-                    <p class="compounds">DIM, Resveratrol, Quercetin, Selenium, Omega-3</p>
-                    <p class="cost">~$120/month</p>
-                </div>
-                <div class="protocol-card">
-                    <h4>HER2+ Targeted Torpedo</h4>
-                    <p class="aka">"Smart Bomb"</p>
-                    <p class="compounds">Berberine, MCP, Turkey Tail, Sulforaphane, NAC</p>
-                    <p class="cost">~$180/month</p>
-                </div>
-                <div class="protocol-card">
-                    <h4>Prevention Protocol</h4>
-                    <p class="aka">"Teresa's Daily Defense"</p>
-                    <p class="compounds">D3, Omega-3, Green Tea, DIM, Selenium</p>
-                    <p class="cost">~$60/month</p>
-                </div>
-            </div>
-        </section>
+            // Update pages
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+            document.getElementById(`page-${page}`).classList.add('active');
+        }
 
-        <section class="commandments">
-            <h2 class="section-title">The Count's Commandments</h2>
-            <ul class="commandments-list">
-                <li>
-                    <span class="commandment-num">1</span>
-                    <span><strong>Thou Shalt Not Feed the Cancer</strong> — Cut the sugar, starve the beast</span>
-                </li>
-                <li>
-                    <span class="commandment-num">2</span>
-                    <span><strong>Honor Thy Circadian Rhythm</strong> — Even creatures of the night need 8 hours</span>
-                </li>
-                <li>
-                    <span class="commandment-num">3</span>
-                    <span><strong>Keep Holy the Hormone Balance</strong> — Know thy numbers</span>
-                </li>
-                <li>
-                    <span class="commandment-num">4</span>
-                    <span><strong>Remember the Lymph Day</strong> — Move that body!</span>
-                </li>
-                <li>
-                    <span class="commandment-num">5</span>
-                    <span><strong>Take Thy Supplements Daily</strong> — Consistency is your armor</span>
-                </li>
-                <li>
-                    <span class="commandment-num">6</span>
-                    <span><strong>Know Thy Biomarkers</strong> — Test often, know always</span>
-                </li>
-                <li>
-                    <span class="commandment-num">7</span>
-                    <span><strong>Embrace the Coven</strong> — You are not alone in this castle</span>
-                </li>
-            </ul>
-        </section>
+        // Modal functions
+        function showModal(title, content) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-body').innerHTML = content;
+            document.getElementById('modal').classList.add('active');
+        }
 
-        <section class="cta-section">
-            <h2 class="section-title">Join the Coven</h2>
-            <p>The night is dark and full of... hope!</p>
-            <div class="cta-buttons">
-                <a href="https://github.com/teslasolar/CountRackula" class="btn btn-primary">
-                    View on GitHub
-                </a>
-                <a href="https://github.com/teslasolar/CountRackula/blob/main/README.md" class="btn btn-secondary">
-                    Documentation
-                </a>
-            </div>
-        </section>
-    </main>
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
 
-    <footer>
-        <p>KONOMI STANDARD v1.0 | Count Rackula</p>
-        <p class="footer-tagline">🦇 "The night is dark and full of... hope!" 🦇</p>
-        <p style="margin-top: 20px; font-size: 0.9rem; color: #888;">
-            This system is for educational and research purposes. Always consult with qualified
-            healthcare providers before making changes to any treatment protocol.
-        </p>
-    </footer>
+        function showMessage() {
+            showModal('🦇 Message from the Count', `
+                <div class="rackula-message" style="margin: 0;">
+                    <p><strong>*swirls cape dramatically*</strong></p>
+                    <p style="margin-top: 15px;">Good evening, Countess Teresa!</p>
+                    <p style="margin-top: 15px;">The Count is pleased with your progress! Your adherence has been exemplary,
+                    and your biomarkers are responding magnificently to the protocol.</p>
+                    <p style="margin-top: 15px;">Remember: Every supplement taken is a spell cast against cancer.
+                    Every healthy choice is a battle won!</p>
+                    <p style="margin-top: 15px;">Keep up the magnificent work, darling. The entire Coven celebrates with you!</p>
+                    <p style="margin-top: 15px; text-align: right; color: var(--gold);">
+                        Eternally yours,<br>🦇 Count Rackula
+                    </p>
+                </div>
+            `);
+        }
+
+        function showProtocolDetail(id) {
+            const protocols = {
+                tnbc: { name: 'Triple-Negative Destroyer', aka: 'The Hostile Takeover' },
+                er: { name: 'ER+ Hormone Harmony', aka: 'The Peaceful Transition' },
+                her2: { name: 'HER2+ Targeted Torpedo', aka: 'Smart Bomb' },
+                brca: { name: 'BRCA Guardian', aka: 'The DNA Defender' },
+                prevention: { name: 'Prevention Protocol', aka: "Teresa's Daily Defense" },
+                maintenance: { name: 'Maintenance Mode', aka: 'The Vigilant Watch' }
+            };
+            const p = protocols[id];
+            showModal(p.name, `
+                <p style="color: var(--blood-red); font-style: italic; margin-bottom: 15px;">"${p.aka}"</p>
+                <p style="color: var(--silver);">Click "Assign Protocol" to switch to this protocol or view full details.</p>
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="closeModal()">Assign Protocol</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">View Details</button>
+                </div>
+            `);
+        }
+
+        function showCompoundDetail(code) {
+            showModal('Compound Details', `
+                <p style="color: var(--silver);">Loading compound information...</p>
+                <p style="margin-top: 15px; color: var(--gold);">Full compound monograph with mechanisms, evidence, and dosing guidelines.</p>
+            `);
+        }
+
+        // Close modal on overlay click
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') closeModal();
+        });
+    </script>
 </body>
 </html>
