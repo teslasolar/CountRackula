@@ -96,7 +96,7 @@ export const F_HER2: Formulation = {
 export const F_PREVENTION: Formulation = {
   id: 'FORM-PREV-001',
   name: 'Prevention Protocol',
-  aka: "Teresa's Daily Defense",
+  aka: "The Count's Daily Defense",
   compounds: [
     { compoundCode: 'D3', doseOverride: 5000, doseUnitOverride: 'IU', required: true },
     { compoundCode: 'OMG3', required: true },

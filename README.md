@@ -69,7 +69,7 @@ biomarkerTracker.addReading('patient-123', {
 });
 
 // Get a personalized message from Count Rackula
-const welcome = rackulaMessenger.generateWelcome('Teresa');
+const welcome = rackulaMessenger.generateWelcome('Darling');
 console.log(welcome);
 ```
 
@@ -94,7 +94,7 @@ console.log(welcome);
 - Monthly Cost: ~$180
 
 ### Prevention Protocol
-*"Teresa's Daily Defense"*
+*"The Count's Daily Defense"*
 - Baseline protection + risk reduction
 - Compounds: D3, Omega-3, Green Tea, DIM, Selenium
 - Monthly Cost: ~$60

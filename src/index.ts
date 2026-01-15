@@ -234,7 +234,7 @@ export const METADATA = {
  * });
  *
  * // Get a personalized message
- * const welcome = rackulaMessenger.generateWelcome('Teresa');
+ * const welcome = rackulaMessenger.generateWelcome('Darling');
  * console.log(welcome);
  * ```
  */
