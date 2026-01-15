@@ -1,0 +1,32 @@
+{
+  "name": "count-rackula",
+  "version": "1.0.0",
+  "description": "Enterprise-Scale Metabolic Oncology Protocol System - Save The Tracts!",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint src --ext .ts",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts"
+  },
+  "keywords": [
+    "oncology",
+    "metabolic",
+    "protocol",
+    "health",
+    "breast-cancer",
+    "prevention"
+  ],
+  "author": "Team Rackula",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/uuid": "^9.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
+  }
+}
