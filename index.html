@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦇 Count Rackula - Save The Tracts</title>
+    <meta name="description" content="Enterprise-Scale Metabolic Oncology Protocol System - I vant to save your racks!">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦇</text></svg>">
+    <style>
+        :root {
+            --primary-purple: #4A0E4E;
+            --dark-bg: #1A1A2E;
+            --silver: #C0C0C0;
+            --blood-red: #8B0000;
+            --gold: #FFD700;
+            --text-light: #E8E8E8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--primary-purple) 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: var(--gold);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            color: var(--silver);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .hashtags {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .hashtag {
+            background: var(--blood-red);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .hashtag:hover {
+            transform: scale(1.05);
+            background: var(--gold);
+            color: var(--dark-bg);
+        }
+
+        /* Main Content */
+        main {
+            padding: 60px 20px;
+        }
+
+        .intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px;
+        }
+
+        .intro p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        /* Layers Grid */
+        .layers-section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: var(--gold);
+            margin: 10px auto;
+        }
+
+        .layers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .layer-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .layer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--gold);
+        }
+
+        .layer-number {
+            display: inline-block;
+            background: var(--primary-purple);
+            color: var(--gold);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .layer-card h3 {
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .layer-card p {
+            color: var(--silver);
+            font-size: 0.95rem;
+        }
+
+        /* Protocols Section */
+        .protocols-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .protocol-card {
+            background: linear-gradient(145deg, rgba(74, 14, 78, 0.8), rgba(26, 26, 46, 0.9));
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .protocol-card:hover {
+            border-color: var(--gold);
+            transform: scale(1.02);
+        }
+
+        .protocol-card h4 {
+            color: var(--gold);
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .protocol-card .aka {
+            color: var(--blood-red);
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .protocol-card .compounds {
+            color: var(--silver);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .protocol-card .cost {
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        /* Commandments */
+        .commandments {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 60px 0;
+        }
+
+        .commandments-list {
+            list-style: none;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .commandments-list li {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .commandments-list li:last-child {
+            border-bottom: none;
+        }
+
+        .commandment-num {
+            background: var(--blood-red);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: var(--dark-bg);
+        }
+
+        .btn-primary:hover {
+            background: white;
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gold);
+            color: var(--dark-bg);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 2px solid var(--gold);
+            margin-top: 60px;
+        }
+
+        footer p {
+            color: var(--silver);
+            margin-bottom: 10px;
+        }
+
+        .footer-tagline {
+            font-style: italic;
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .tagline {
+                font-size: 1.2rem;
+            }
+
+            .logo {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Bat animation background */
+        .bat-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .flying-bat {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: fly 20s linear infinite;
+        }
+
+        @keyframes fly {
+            0% {
+                transform: translate(-100px, 100vh) rotate(0deg);
+            }
+            100% {
+                transform: translate(100vw, -100px) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bat-bg">
+        <span class="flying-bat" style="animation-delay: 0s; top: 20%;">🦇</span>
+        <span class="flying-bat" style="animation-delay: 5s; top: 40%;">🦇</span>
+        <span class="flying-bat" style="animation-delay: 10s; top: 60%;">🦇</span>
+        <span class="flying-bat" style="animation-delay: 15s; top: 80%;">🦇</span>
+    </div>
+
+    <header>
+        <div class="logo">🦇</div>
+        <h1>Count Rackula</h1>
+        <p class="tagline">"I vant to save your racks! Blah!"</p>
+        <p>Enterprise-Scale Metabolic Oncology Protocol System</p>
+        <div class="hashtags">
+            <span class="hashtag">#SaveTheTracts</span>
+            <span class="hashtag">#TeamRackula</span>
+            <span class="hashtag">#CountOnTheCount</span>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="intro">
+            <p>
+                <strong>Good evening, darlings...</strong> Welcome to Castle RACK, where evidence-based
+                metabolic oncology meets gothic glam. Count Rackula is your guide through the night,
+                offering comprehensive supplement protocols for breast cancer prevention, treatment
+                enhancement, and survivorship.
+            </p>
+            <p>
+                Built on the KONOMI STANDARD, this enterprise-scale system provides everything from
+                compound management to biomarker tracking, all wrapped in a supportive community
+                we call <strong>The Coven</strong>.
+            </p>
+        </section>
+
+        <section class="layers-section">
+            <h2 class="section-title">System Architecture</h2>
+            <div class="layers-grid">
+                <div class="layer-card">
+                    <span class="layer-number">1</span>
+                    <h3>Base UDTs</h3>
+                    <p>Healthcare primitives and core type definitions for the entire system.</p>
+                </div>
+                <div class="layer-card">
+                    <span class="layer-number">2</span>
+                    <h3>Compound System</h3>
+                    <p>16 evidence-based compounds with interaction checking and synergy scoring.</p>
+                </div>
+                <div class="layer-card">
+                    <span class="layer-number">3</span>
+                    <h3>Protocol Engine</h3>
+                    <p>Treatment protocol management with formulations for each cancer type.</p>
+                </div>
+                <div class="layer-card">
+                    <span class="layer-number">4</span>
+                    <h3>Monitoring</h3>
+                    <p>Biomarker tracking, trend analysis, and the Rackula Score dashboard.</p>
+                </div>
+                <div class="layer-card">
+                    <span class="layer-number">5</span>
+                    <h3>AI Persona</h3>
+                    <p>Count Rackula's personality engine for educational and motivational content.</p>
+                </div>
+                <div class="layer-card">
+                    <span class="layer-number">6</span>
+                    <h3>FITTIT System</h3>
+                    <p>3D-printed custom therapeutic bras with personalized fit and features.</p>
+                </div>
+                <div class="layer-card">
+                    <span class="layer-number">7</span>
+                    <h3>The Coven</h3>
+                    <p>Community support with circles, mentor matching, and resource sharing.</p>
+                </div>
+                <div class="layer-card">
+                    <span class="layer-number">9</span>
+                    <h3>Enterprise API</h3>
+                    <p>RESTful endpoints for all services with comprehensive schemas.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="protocols-section">
+            <h2 class="section-title">Protocol Formulations</h2>
+            <div class="protocols-grid">
+                <div class="protocol-card">
+                    <h4>Triple-Negative Destroyer</h4>
+                    <p class="aka">"The Hostile Takeover"</p>
+                    <p class="compounds">Metformin, Aspirin, D3, Melatonin, Curcumin, EGCG</p>
+                    <p class="cost">~$150/month</p>
+                </div>
+                <div class="protocol-card">
+                    <h4>ER+ Hormone Harmony</h4>
+                    <p class="aka">"The Peaceful Transition"</p>
+                    <p class="compounds">DIM, Resveratrol, Quercetin, Selenium, Omega-3</p>
+                    <p class="cost">~$120/month</p>
+                </div>
+                <div class="protocol-card">
+                    <h4>HER2+ Targeted Torpedo</h4>
+                    <p class="aka">"Smart Bomb"</p>
+                    <p class="compounds">Berberine, MCP, Turkey Tail, Sulforaphane, NAC</p>
+                    <p class="cost">~$180/month</p>
+                </div>
+                <div class="protocol-card">
+                    <h4>Prevention Protocol</h4>
+                    <p class="aka">"Teresa's Daily Defense"</p>
+                    <p class="compounds">D3, Omega-3, Green Tea, DIM, Selenium</p>
+                    <p class="cost">~$60/month</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="commandments">
+            <h2 class="section-title">The Count's Commandments</h2>
+            <ul class="commandments-list">
+                <li>
+                    <span class="commandment-num">1</span>
+                    <span><strong>Thou Shalt Not Feed the Cancer</strong> — Cut the sugar, starve the beast</span>
+                </li>
+                <li>
+                    <span class="commandment-num">2</span>
+                    <span><strong>Honor Thy Circadian Rhythm</strong> — Even creatures of the night need 8 hours</span>
+                </li>
+                <li>
+                    <span class="commandment-num">3</span>
+                    <span><strong>Keep Holy the Hormone Balance</strong> — Know thy numbers</span>
+                </li>
+                <li>
+                    <span class="commandment-num">4</span>
+                    <span><strong>Remember the Lymph Day</strong> — Move that body!</span>
+                </li>
+                <li>
+                    <span class="commandment-num">5</span>
+                    <span><strong>Take Thy Supplements Daily</strong> — Consistency is your armor</span>
+                </li>
+                <li>
+                    <span class="commandment-num">6</span>
+                    <span><strong>Know Thy Biomarkers</strong> — Test often, know always</span>
+                </li>
+                <li>
+                    <span class="commandment-num">7</span>
+                    <span><strong>Embrace the Coven</strong> — You are not alone in this castle</span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="cta-section">
+            <h2 class="section-title">Join the Coven</h2>
+            <p>The night is dark and full of... hope!</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/teslasolar/CountRackula" class="btn btn-primary">
+                    View on GitHub
+                </a>
+                <a href="https://github.com/teslasolar/CountRackula/blob/main/README.md" class="btn btn-secondary">
+                    Documentation
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>KONOMI STANDARD v1.0 | Count Rackula</p>
+        <p class="footer-tagline">🦇 "The night is dark and full of... hope!" 🦇</p>
+        <p style="margin-top: 20px; font-size: 0.9rem; color: #888;">
+            This system is for educational and research purposes. Always consult with qualified
+            healthcare providers before making changes to any treatment protocol.
+        </p>
+    </footer>
+</body>
+</html>
