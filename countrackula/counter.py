@@ -11,7 +11,7 @@ class Counter:
         Initialize a counter with an optional initial value
         
         Args:
-            initial_value (int): Starting value for the counter (default: 0)
+            initial_value (int or float): Starting value for the counter (default: 0)
         
         Raises:
             TypeError: If initial_value is not a number
@@ -30,10 +30,10 @@ class Counter:
         Increment the counter by the specified amount
         
         Args:
-            amount (int): Amount to increment (default: 1)
+            amount (int or float): Amount to increment (default: 1)
         
         Returns:
-            int: The new count value
+            int or float: The new count value
         
         Raises:
             TypeError: If amount is not a number
@@ -48,10 +48,10 @@ class Counter:
         Decrement the counter by the specified amount
         
         Args:
-            amount (int): Amount to decrement (default: 1)
+            amount (int or float): Amount to decrement (default: 1)
         
         Returns:
-            int: The new count value
+            int or float: The new count value
         
         Raises:
             TypeError: If amount is not a number
