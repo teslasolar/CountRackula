@@ -12,7 +12,12 @@ class Counter:
         
         Args:
             initial_value (int): Starting value for the counter (default: 0)
+        
+        Raises:
+            TypeError: If initial_value is not a number
         """
+        if not isinstance(initial_value, (int, float)):
+            raise TypeError(f"initial_value must be a number, got {type(initial_value).__name__}")
         self._count = initial_value
     
     @property
@@ -29,7 +34,12 @@ class Counter:
         
         Returns:
             int: The new count value
+        
+        Raises:
+            TypeError: If amount is not a number
         """
+        if not isinstance(amount, (int, float)):
+            raise TypeError(f"amount must be a number, got {type(amount).__name__}")
         self._count += amount
         return self._count
     
@@ -42,7 +52,12 @@ class Counter:
         
         Returns:
             int: The new count value
+        
+        Raises:
+            TypeError: If amount is not a number
         """
+        if not isinstance(amount, (int, float)):
+            raise TypeError(f"amount must be a number, got {type(amount).__name__}")
         self._count -= amount
         return self._count
     
